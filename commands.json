@@ -1,0 +1,47 @@
+[
+  {
+    "name": "hello",
+    "description": "Say hello to Blobson",
+    "type": "static",
+    "response": "Well hello there!"
+  },
+  {
+    "name": "pat",
+    "description": "Pat Blobson",
+    "type": "random",
+    "responses": [
+      "Tee hee!",
+      "_farts_",
+      "Ooooh that was nice, thank you!",
+      "*purrs softly*",
+      "*blorps with joy*",
+      "You're my favourite now.",
+      "*wiggles approvingly*",
+      "More pats, please!",
+      "Eeeeeek! That tickled!",
+      "My goop is vibrating with happiness!",
+      "*does a happy wobbly flip*",
+      "Squish approved.",
+      "*glorps in delight*",
+      "That pat added +1 to my squishiness stat!",
+      "*muffled blob sounds of contentment*",
+      "You pat me, I pat you back. With love.",
+      "*slorps appreciatively*",
+      "I shall remember this pat until the end of time!",
+      "*initiates blob hug protocol*",
+      "*gooey appreciation intensifies*",
+      "Oooh, that's the good squish, right there...",
+      "*burbles happily*",
+      "*absorbs pat and converts to warmth*"
+    ]
+  },
+  {
+    "name": "reload",
+    "description": "Reload poor Blobson...",
+    "type": "action",
+    "response": {
+      "success": "Hooray! Commands have been reloaded...",
+      "failure": "Uh oh! Something went wrong..."
+    }
+  }
+]
