@@ -5,6 +5,17 @@ from datetime import datetime, timezone
 import discord
 
 
+def log_command(name, interaction):
+    print(f"Command '/{name}' by '{interaction.user.display_name}' "
+          f"({interaction.user.id}) "
+          f"in {interaction.channel.name[2:]}")
+
+
+async def bot_wait(interaction, thinking=True, ephemeral=False, min_wait=3, max_wait=9):
+    await interaction.response.defer(thinking=thinking, ephemeral=ephemeral)
+    await asyncio.sleep(random.uniform(min_wait, max_wait))
+
+
 async def load_commands(client, command_defs, guild_id, config):
     client.tree.clear_commands(guild=guild_id)
 
@@ -39,37 +50,43 @@ async def load_commands(client, command_defs, guild_id, config):
 def register_static_command(client, name, desc, message, guild_id):
     @client.tree.command(name=name, description=desc, guild=guild_id)
     async def static_cmd(interaction: discord.Interaction):
-        print(f"Command '/{name}' by '{interaction.user.display_name}' "
-              f"({interaction.user.id}) "
-              f"in {interaction.channel.name}")
+        log_command(name, interaction)
 
-        async with interaction.channel.typing():
-            await asyncio.sleep(random.uniform(3, 9))
+        member = interaction.guild.get_member(interaction.user.id)
+        if not member:
+            return
 
-        await interaction.response.send_message(message)
+        await bot_wait(interaction)
+
+        msg = message.replace("%member%", member.mention)
+        await interaction.followup.send(msg)
 
 
 def register_random_command(client, name, desc, messages, guild_id):
     @client.tree.command(name=name, description=desc, guild=guild_id)
     async def random_cmd(interaction: discord.Interaction):
-        print(f"Command '/{name}' by '{interaction.user.display_name}' "
-              f"({interaction.user.id}) "
-              f"in {interaction.channel.name}")
+        log_command(name, interaction)
 
-        async with interaction.channel.typing():
-            await asyncio.sleep(random.uniform(3, 9))
+        member = interaction.guild.get_member(interaction.user.id)
+        if not member:
+            return
+
+        await bot_wait(interaction)
 
         msg = random.choice(messages) if messages else "_oh..._"
-        await interaction.response.send_message(msg)
+        await interaction.followup.send(msg.replace("%member%", member.mention))
 
 
 def register_reload_command(client, name, desc, success, failure, guild_id, command_defs, config):
     @client.tree.command(name=name, description=desc, guild=guild_id)
     async def reload_cmd(interaction: discord.Interaction):
-        print(f"Command '/{name}' by '{interaction.user.display_name}' "
-              f"({interaction.user.id}) "
-              f"in {interaction.channel.name}")
-        await interaction.response.defer(ephemeral=True)
+        log_command(name, interaction)
+
+        member = interaction.guild.get_member(interaction.user.id)
+        if not member:
+            return
+
+        await bot_wait(interaction, ephemeral=True)
 
         try:
             await load_commands(client, command_defs, guild_id, config)
@@ -83,19 +100,13 @@ def register_reload_command(client, name, desc, success, failure, guild_id, comm
 def register_auth_command(client, name, desc, responses, guild_id, legit_cfg, config):
     @client.tree.command(name=name, description=desc, guild=guild_id)
     async def auth_cmd(interaction: discord.Interaction):
-        print(f"Command '/{name}' by '{interaction.user.display_name}' "
-              f"({interaction.user.id}) "
-              f"in {interaction.channel.name}")
+        log_command(name, interaction)
 
         member = interaction.guild.get_member(interaction.user.id)
         if not member:
             return
 
-        check_msg = random.choice(responses.get("check", ["Checking..."]))
-        await interaction.response.send_message(check_msg.replace("%member%", member.mention))
-
-        async with interaction.channel.typing():
-            await asyncio.sleep(random.uniform(3, 9))
+        await bot_wait(interaction)
 
         role = interaction.guild.get_role(legit_cfg.get("give_role_id"))
         member_age = (datetime.now(timezone.utc) - member.joined_at).days if member.joined_at else 0
@@ -116,7 +127,7 @@ def register_auth_command(client, name, desc, responses, guild_id, legit_cfg, co
             result = "failure"
             msg = random.choice(responses.get("failure", ["_I don't know you %member%..._"]))
 
-        await interaction.channel.send(msg.replace("%member%", member.mention))
+        await interaction.followup.send(msg.replace("%member%", member.mention))
 
         if result == "existed":
             return

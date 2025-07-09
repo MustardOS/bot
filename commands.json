@@ -3,7 +3,7 @@
     "name": "hello",
     "description": "Say hello to Blobson",
     "type": "static",
-    "response": "Well hello there!"
+    "response": "Well hello there %member%!"
   },
   {
     "name": "pat",
@@ -12,12 +12,12 @@
     "responses": [
       "Tee hee!",
       "_farts_",
-      "Ooooh that was nice, thank you!",
+      "Ooooh that was nice %member%, thank you!",
       "*purrs softly*",
       "*blorps with joy*",
       "You're my favourite now!",
       "*wiggles approvingly*",
-      "More pats, please!",
+      "More pats, please %member%!",
       "Eeeeeek! That tickled!",
       "My goop is vibrating with happiness!",
       "*does a happy wobbly flip*",
@@ -30,7 +30,7 @@
       "I shall remember this pat until the end of time!",
       "*initiates blob hug protocol*",
       "*gooey appreciation intensifies*",
-      "Oooh, that's the good squish, right there...",
+      "Oooh, that's the good squish, right there %member%...",
       "*burbles happily*",
       "*absorbs pat and converts to warmth*"
     ]
@@ -40,14 +40,6 @@
     "description": "Legitimacy check...",
     "type": "auth",
     "response": {
-      "check": [
-        "Commencing squish-to-trust analysis for %member%...",
-        "Hold tight %member%! I'm diving into your message soup!",
-        "Crunching numbers for %member%... and snacks... mostly snacks!",
-        "_Sniffs %member%..._ Let me see if you smell like a real one!",
-        "Engaging quantum squish protocol for %member%, please wait...",
-        "Checking %member% credentials and their squishiness level..."
-      ],
       "success": [
         "%member%, you're legit! I am proud of you.",
         "Oh snap %member%, you're the realest of the real!",
