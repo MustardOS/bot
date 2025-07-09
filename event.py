@@ -17,7 +17,40 @@ def register(client, config):
             guild = client.guilds[0]
             print(f"Connected to: '{guild.name}' ({guild.id})")
         else:
-            print("Not connected to any guilds.")
+            print("Not connected to any guilds...")
+
+    @client.event
+    async def on_message(message):
+        if message.author.bot:
+            return
+
+        if message.content.startswith("/"):
+            return
+
+        spam_attachment_block = config.get("spam_attachment_block")
+        legit_role_id = config.get("legit", {}).get("give_role_id")
+
+        if spam_attachment_block and any(role.id == spam_attachment_block for role in message.author.roles):
+            if legit_role_id and any(role.id == legit_role_id for role in message.author.roles):
+                return
+
+            if not message.content.strip() and message.attachments:
+                await message.delete()
+
+                if message.author.bot or is_ignored(message.channel, ignore_channel):
+                    return
+
+                log = client.get_channel(log_channel_id)
+                if not log:
+                    return
+
+                embed = discord.Embed(title="Attachment Spam Blocked", color=discord.Color.blurple())
+                embed.set_author(name=str(message.author), icon_url=message.author.display_avatar.url)
+                embed.add_field(name="User ID", value=message.author.id, inline=False)
+                embed.add_field(name="Channel", value=message.channel.name[2:], inline=False)
+                embed.timestamp = message.created_at
+
+                await log.send(embed=embed)
 
     @client.event
     async def on_message_delete(message):
@@ -78,7 +111,6 @@ def register(client, config):
 
         embed = discord.Embed(
             title="Member Left",
-            description=f"{member.mention} has left the server...",
             color=discord.Color.dark_red()
         )
 
@@ -125,6 +157,6 @@ def register(client, config):
                 if announce:
                     await announce.send(
                         f"## 🎉 {after.mention} is now a "
-                        f"**{key.replace('_role', '').title()}**"
+                        f"**{key.replace('_role', '').title()}** "
                         f"supporter!"
                     )

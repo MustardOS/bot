@@ -34,7 +34,7 @@ class BlobBot(discord.Client):
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
-        await command.load_commands(self, COMMAND_DEFS, GUILD_ID)
+        await command.load_commands(self, COMMAND_DEFS, GUILD_ID, CONFIG)
         self.tree.copy_global_to(guild=GUILD_ID)
         await self.tree.sync(guild=GUILD_ID)
 
