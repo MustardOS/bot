@@ -11,7 +11,7 @@ def log_command(name, interaction):
           f"in {interaction.channel.name[2:]}")
 
 
-async def bot_wait(interaction, thinking=True, ephemeral=False, min_wait=3, max_wait=9):
+async def bot_wait(interaction, thinking=True, ephemeral=False, min_wait=1, max_wait=3):
     await interaction.response.defer(thinking=thinking, ephemeral=ephemeral)
     await asyncio.sleep(random.uniform(min_wait, max_wait))
 
@@ -110,11 +110,12 @@ def register_auth_command(client, name, desc, responses, guild_id, legit_cfg, co
 
         role = interaction.guild.get_role(legit_cfg.get("give_role_id"))
         member_age = (datetime.now(timezone.utc) - member.joined_at).days if member.joined_at else 0
+        account_age = (datetime.now(timezone.utc) - member.created_at).days if member.created_at else 0
 
         if role and role in member.roles:
             result = "existed"
             msg = random.choice(responses.get("exist", ["Oh %member%... you are already legit, **yay!**"]))
-        elif member_age >= legit_cfg.get("account_age", 7):
+        elif member_age >= legit_cfg.get("member_age", 14) and account_age >= legit_cfg.get("account_age", 365):
             result = "success"
             msg = random.choice(responses.get("success", ["Hey %member%! **You seem legit!**"]))
             if role:
@@ -145,7 +146,8 @@ def register_auth_command(client, name, desc, responses, guild_id, legit_cfg, co
             embed.set_author(name=str(member), icon_url=member.display_avatar.url)
             embed.add_field(name="User ID", value=member.id, inline=False)
             embed.add_field(name="Result", value=result_label, inline=False)
-            embed.add_field(name="Account Age", value=f"{member_age} days", inline=False)
+            embed.add_field(name="Member Age", value=f"{member_age} days", inline=False)
+            embed.add_field(name="Account Age", value=f"{account_age} days", inline=False)
             embed.timestamp = datetime.now(timezone.utc)
 
             try:
