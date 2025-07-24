@@ -130,19 +130,22 @@ def register(client, config):
         if not log:
             return
 
-        roles_before = set(r.id for r in before.roles)
-        roles_after = set(r.id for r in after.roles)
+        new_roles = set(r.id for r in after.roles) - set(r.id for r in before.roles)
 
-        for key in ["hero_role", "knight_role", "artificer_role"]:
-            data = config.get(key, {})
-            role_id = data.get("id")
-            announce_id = data.get("channel")
+        roles_config = config.get("announce_roles", {})
+        role_priority = roles_config.get("priority", [])
+
+        for key in role_priority:
+            role_data = roles_config.get(key, {})
+            role_id = role_data.get("id")
+            announce_id = role_data.get("channel")
 
             if not role_id or not announce_id:
                 continue
-            if role_id not in roles_before and role_id in roles_after:
+
+            if role_id in new_roles:
                 embed = discord.Embed(
-                    title=f"A new {key.replace('_role', '').title()} supporter!",
+                    title=f"A new {key.title()} supporter!",
                     color=discord.Color.gold()
                 )
 
@@ -157,6 +160,7 @@ def register(client, config):
                 if announce:
                     await announce.send(
                         f"## 🎉 {after.mention} is now a "
-                        f"**{key.replace('_role', '').title()}** "
+                        f"**{key.title()}** "
                         f"supporter!"
                     )
+                break
