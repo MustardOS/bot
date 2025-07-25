@@ -11,6 +11,27 @@ def log_command(name, interaction):
           f"in {interaction.channel.name[2:]}")
 
 
+def parse_emoji(raw: str, client: discord.Client):
+    if raw and raw.startswith("<:") and raw.endswith(">"):
+        try:
+            name_id = raw.strip("<:>")
+            name, emoji_id = name_id.split(":")
+            emoji_id = int(emoji_id)
+
+            for e in client.emojis:
+                if e.id == emoji_id:
+                    return discord.PartialEmoji(name=e.name, id=e.id)
+
+            print(f"[WARN] Custom emoji ID not found in guild: {emoji_id}")
+            return None
+
+        except Exception as e:
+            print(f"[WARN] Failed to parse custom emoji: {raw} ({e})")
+            return None
+
+    return raw if raw else None
+
+
 async def bot_wait(interaction, thinking=True, ephemeral=False, min_wait=1, max_wait=3):
     await interaction.response.defer(thinking=thinking, ephemeral=ephemeral)
     await asyncio.sleep(random.uniform(min_wait, max_wait))
@@ -45,6 +66,12 @@ async def load_commands(client, command_defs, guild_id, config):
             resp = cmd.get("response", {})
             register_auth_command(client, name, desc, resp, guild_id,
                                   config.get("legit", {}), config)
+
+        elif ctype == "link":
+            register_link_command(client, name, desc, cmd, guild_id)
+
+        elif ctype == "direct":
+            register_direct_command(client, name, desc, cmd, guild_id)
 
 
 def register_static_command(client, name, desc, message, guild_id):
@@ -154,3 +181,80 @@ def register_auth_command(client, name, desc, responses, guild_id, legit_cfg, co
                 await log_channel.send(embed=embed)
             except discord.Forbidden:
                 print(f"[WARN] Cannot log legitimacy check for {member.id}")
+
+
+def register_link_command(client, name, desc, link_cfg, guild_id):
+    @client.tree.command(name=name, description=desc, guild=guild_id)
+    async def link_cmd(interaction: discord.Interaction):
+        log_command(name, interaction)
+
+        member = interaction.guild.get_member(interaction.user.id)
+        if not member:
+            return
+
+        await bot_wait(interaction)
+
+        embed_cfg = link_cfg.get("embed", {})
+        embed = discord.Embed(
+            title=embed_cfg.get("title", "Bunch of links"),
+            description=embed_cfg.get("description", "Here click on these if you dare!"),
+            color=getattr(discord.Color, embed_cfg.get("color", "orange"))()
+        )
+
+        if "footer" in embed_cfg:
+            embed.set_footer(text=embed_cfg["footer"])
+
+        view = discord.ui.View()
+
+        for link in link_cfg.get("links", []):
+            label = link.get("label", "Link")
+            url = link.get("url")
+            emoji = link.get("emoji") or None
+            row = link.get("row", None)
+
+            kwargs = {
+                "style": discord.ButtonStyle.link,
+                "label": label,
+                "url": url,
+            }
+
+            if emoji:
+                kwargs["emoji"] = emoji
+            if row is not None:
+                kwargs["row"] = row
+
+            view.add_item(discord.ui.Button(**kwargs))
+
+        await interaction.followup.send(embed=embed, view=view)
+
+
+def register_direct_command(client, name, desc, direct_cfg, guild_id):
+    @client.tree.command(name=name, description=desc, guild=guild_id)
+    async def direct_cmd(interaction: discord.Interaction):
+        log_command(name, interaction)
+
+        member = interaction.guild.get_member(interaction.user.id)
+        if not member:
+            return
+
+        await bot_wait(interaction)
+
+        embed = discord.Embed(
+            title=direct_cfg.get("title", "Information"),
+            description=direct_cfg.get("text", ""),
+            color=getattr(discord.Color, direct_cfg.get("color", "blue"))()
+        )
+
+        image = direct_cfg.get("image")
+        if image:
+            embed.set_image(url=image)
+
+        view = discord.ui.View()
+        if "url" in direct_cfg:
+            view.add_item(discord.ui.Button(
+                label=direct_cfg.get("button", "Visit Site"),
+                url=direct_cfg["url"],
+                style=discord.ButtonStyle.link
+            ))
+
+        await interaction.followup.send(embed=embed, view=view if view.children else None)

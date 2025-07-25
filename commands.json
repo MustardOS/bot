@@ -74,5 +74,87 @@
       "success": "Hooray! Commands have been reloaded...",
       "failure": "Uh oh! Something went wrong..."
     }
+  },
+  {
+    "name": "forum",
+    "description": "Links to various parts of the forum!",
+    "type": "link",
+    "embed": {
+      "title": "MustardOS Community Forum",
+      "description": "Jump to any section of the community forum!",
+      "color": "orange"
+    },
+    "links": [
+      {
+        "label": "Announcements",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/announcement/23",
+        "row": 0
+      },
+      {
+        "label": "FAQ",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/faq/7",
+        "row": 0
+      },
+      {
+        "label": "General",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/general/17/none",
+        "row": 0
+      },
+      {
+        "label": "Customisation",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/custom/4/none",
+        "row": 0
+      },
+      {
+        "label": "Applications",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/application/20/none",
+        "row": 1
+      },
+      {
+        "label": "Ideas",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/ideas/5/none",
+        "row": 1
+      },
+      {
+        "label": "Issues",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/issues/8/none",
+        "row": 1
+      },
+      {
+        "label": "Bongle Rants",
+        "emoji": "",
+        "url": "https://community.muos.dev/c/general/rants/28",
+        "row": 1
+      }
+    ]
+  },
+  {
+    "name": "format",
+    "description": "Link to SD Memory Card Formatting Tool",
+    "type": "direct",
+    "title": "SD Memory Card Formatting Tool",
+    "text": "It is strongly recommended to use the SD Memory Card Formatter to format mSD cards rather than using formatting tools provided with individual operating systems.",
+    "image": "https://raw.githubusercontent.com/MustardOS/bot/refs/heads/main/assets/a42ba50c-6f80-452b-b361-4255afd2bfee.png",
+    "url": "https://www.sdcard.org/downloads/formatter/",
+    "button": "Open Website to Download Tool",
+    "color": "blue"
+  },
+  {
+    "name": "bios",
+    "description": "Information about BIOS Files",
+    "type": "direct",
+    "title": "RetroArch BIOS Information Hub",
+    "text": "Learn which BIOS files are required for certain systems and where to place them. We cannot provide BIOS files or direct download links, as they are copyrighted.",
+    "image": "https://raw.githubusercontent.com/MustardOS/bot/refs/heads/main/assets/883fb5a3-185f-4162-89ef-2e7e9b060d37.png",
+    "url": "https://docs.libretro.com/library/bios/",
+    "button": "Open RetroArch BIOS Information Hub",
+    "color": "blue"
   }
 ]
