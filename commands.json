@@ -156,5 +156,16 @@
     "url": "https://docs.libretro.com/library/bios/",
     "button": "Open RetroArch BIOS Information Hub",
     "color": "blue"
+  },
+  {
+    "name": "hotkey",
+    "description": "Show Handy Hotkeys",
+    "type": "direct",
+    "title": "muOS Handy Hotkeys",
+    "text": "**Brightness:** `MENU + Volume`\n**Screenshot:** `MENU + POWER`\n**Sleep Suspend:** Hold `POWER` for **2** seconds\n\n**Safe Restart:** `L2 + R2 + START`\n**Safe Shutdown:** `L2 + R2 + SELECT`\n\n**Modify Core / Governor:** Press `SELECT` on content\n**Content Root:** Press `START` on content\n\n**RetroArch Menu:** `MENU + X`\n**RetroArch Close Content:** `MENU + START`\n**Fast Forward Toggle:** `MENU + R1`\n\n**Load State:** `MENU + L2`\n**Save State:** `MENU + R2`\n**Save State Decrement:** `MENU + DPAD LEFT`\n**Save State Increment:** `MENU + DPAD RIGHT`\n\n**Slow Motion:** `MENU + L1`\n**Show FPS Toggle:** `MENU + Y`\n\n**DPAD Analogue <> Digital Swap:** Short Press `POWER`",
+    "image": "",
+    "url": "https://muos.dev/#handy-hotkeys",
+    "button": "View Handy Hotkeys on Website",
+    "color": "blue"
   }
 ]
