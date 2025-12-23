@@ -168,4 +168,48 @@
     "button": "View Handy Hotkeys on Website",
     "color": "blue"
   }
+    {
+    "name": "tour",
+    "description": "Show Grand Tour link",
+    "type": "direct",
+    "title": "muOS Grand Tour",
+    "text": "Your complete guide to every part of the current MustardOS release. From the familiar Main Menu to the deep reaches of advanced settings to system information, and everything in between",
+    "image": "",
+    "url": "https://muos.dev/tour",
+    "button": "View the Grand Tour on Website",
+    "color": "blue"
+  }
+  {
+    "name": "repressed",
+    "description": "Explain why retroarch configurations are locked",
+    "type": "direct",
+    "title": "Retroarch being repressed",
+    "text": "This is working as intended. \n We have deliberately made the default configuration for RetroArch stay as-is. Due to the amount of issues in the past relating to people changing goodness knows what in their global configuration we have opted to freeze it. \n This can be adjusted though, click here to read more",
+    "image": "",
+    "url": "https://community.muos.dev/t/my-retroarch-configuration-is-being-repressed/823",
+    "button": "View Retroarch config details",
+    "color": "blue"
+  }
+  {
+    "name": "themes",
+    "description": "Show link to themes",
+    "type": "direct",
+    "title": "Theme library",
+    "text": "On MustardOS, you can fully customise the look of your menus on your device! This is achieved with Themes. You can make your own themes by following the help pages here, or install some pre-existing ones below. Happy theme-ing!",
+    "image": "",
+    "url": "https://muos.dev/themes",
+    "button": "View Themes library on Website",
+    "color": "blue"
+  }
+  {
+    "name": "cores",
+    "description": "Show link to cores",
+    "type": "direct",
+    "title": "Why extra cores are now being provided as separate downloads",
+    "text": "Starting from the Goose release of muOS, we have made a key change in how cores, and extra add-on systems, are distributed. You may have noticed we are no longer preinstalling everything on the base installable release and there is actually a good reason for it.",
+    "image": "",
+    "url": "https://community.muos.dev/t/why-extra-cores-are-now-being-provided-as-separate-downloads/672",
+    "button": "View Extra cores info on Website",
+    "color": "blue"
+  }
 ]
